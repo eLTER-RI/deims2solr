@@ -53,9 +53,9 @@ This docker image run Python script that fetch sites metadata from deims.org
 
 Script run on docker deploy and every night at 3:00
 
-- User may specify different eLTER network for meta-data harvesting
-- Debug info can be turned on/off in order to print harvesting results in colsole
-- User may turn on/off saving geometry saving from meta-data
+- User may specify different eLTER network for meta-data harvesting - NETWORK
+- Debug info can be turned on/off in order to print harvesting results in console - DEBUG
+- User may turn on/off saving geometry saving from meta-data - REMOVE_GEOMETRY
 
 Harvested metadata are stored in postgres docker.
 
@@ -65,6 +65,14 @@ Please see docker-compose.yml and Dockerfile.python for setup details
 
 ### Solr docker
 Solr docker use deims2solr core that read the data from postgres docker
+
+<strong>!!! Important:</strong> Solr is ready ~5 min after deploy (time that needs to harvest deims.org)
+
+Take a look at 
+````commandline
+http://localhost:8983/solr/#/deims2solr/core-overview
+````
+Num Docs must be greater than 0
 
 #### Usage examples
 Search for free text eg. natura 2000 like this:
