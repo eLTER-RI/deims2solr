@@ -2,10 +2,7 @@
   <img src="assets/eLTER-IMAGE-eLTER_logo-v01.svg" alt="eLTER Project Logo" width="300" height="auto"/>
 </p>
 
-# Repository title
-
-DEIMS2SOLR
-
+# DEIMS2SOLR
 
 ![](https://img.shields.io/badge/license-EUPL--1.2-orange)
 ![](https://img.shields.io/badge/Postgres-latest-orange)
@@ -89,6 +86,4 @@ Please see Dockerfile.solr
   </a> <a href="https://elter-ri.eu/elter-plus">
     <img src="assets/eLTER-IMAGE-PLUS_logo-v01.svg" width="175" height="auto"/>
   </a> <a href="https://elter-ri.eu/elter-enrich">
-    <img src="assets/eLTER-IMAGE-EnRich_logo-v01.svg" alt="eLTER EnRich Logo" width="175" height="auto"/>
-  </a>
 </p>
