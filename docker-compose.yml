@@ -1,0 +1,68 @@
+# docker-compose.yml
+services:
+  # Postgres docker
+  postgres:
+    container_name: postgres
+    image: postgres:latest
+    networks:
+      - solr-network
+    environment:
+      POSTGRES_DB: deims2solr
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+    restart: always
+
+  # Python docker
+  python:
+    container_name: python
+    build:
+      context: .
+      dockerfile: Dockerfile.python
+    networks:
+      - solr-network
+    depends_on:
+      - postgres
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=deims2solr
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    restart: always
+
+  # Solr docker
+  solr:
+    container_name: solr
+    build:
+      context: .
+      dockerfile: Dockerfile.solr
+    depends_on:
+      - python
+    networks:
+      - solr-network
+    environment:
+      - POSTGRES_HOST=postgres
+      - POSTGRES_PORT=5432
+      - POSTGRES_DB=deims2solr
+      - POSTGRES_USER=postgres
+      - POSTGRES_PASSWORD=postgres
+    ports:
+      - "8983:8983"
+    volumes:
+      - ./postgresql-42.7.3.jar:/opt/solr/dist/postgresql-42.7.3.jar
+      - ./solr_config:/opt/solr/server/solr/configsets/deims2solr
+    restart: always
+    links:
+      - postgres
+
+networks:
+  solr-network:
+    driver: bridge
+
+volumes:
+  postgres_data:

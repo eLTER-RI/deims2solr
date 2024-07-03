@@ -1,0 +1,13 @@
+<dataConfig>
+  <dataSource type="JdbcDataSource"
+              driver="org.postgresql.Driver"
+              url="jdbc:postgresql://postgres:5432/deims2solr"
+              user="postgres"
+              password="postgres" />
+  <document>
+    <entity name="site_data" query="SELECT id, data FROM site_data">
+      <field column="id" name="id" />
+      <field column="data" name="data" />
+    </entity>
+  </document>
+</dataConfig>

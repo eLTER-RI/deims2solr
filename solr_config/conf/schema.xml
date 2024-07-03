@@ -1,0 +1,22 @@
+<schema name="deims2solr" version="1.6">
+  <types>
+    <fieldType name="string" class="solr.StrField" sortMissingLast="true" />
+    <fieldType name="text_general" class="solr.TextField" positionIncrementGap="100">
+      <analyzer type="index">
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+      <analyzer type="query">
+        <tokenizer class="solr.StandardTokenizerFactory"/>
+        <filter class="solr.LowerCaseFilterFactory"/>
+      </analyzer>
+    </fieldType>
+  </types>
+
+  <fields>
+    <field name="id" type="string" indexed="true" stored="true" required="true"/>
+    <field name="data" type="text_general" indexed="true" stored="true"/>
+  </fields>
+
+  <uniqueKey>id</uniqueKey>
+</schema>

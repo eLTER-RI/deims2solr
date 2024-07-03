@@ -1,0 +1,45 @@
+# Use the official Solr image from Docker Hub
+FROM solr:9.2.1
+
+# Create directories for custom configurations
+USER root
+
+RUN mkdir -p /var/solr/data
+RUN chown -R solr:solr /var/solr
+
+# Create directories with correct ownership
+RUN mkdir -p /opt/solr/server/solr/configsets/deims2solr
+RUN chown -R solr:solr /opt/solr/server/solr/configsets/deims2solr
+
+# Copy Solr core configuration from local directory
+COPY solr_config/* /opt/solr/server/solr/configsets/deims2solr
+
+COPY solr_import.sh /app/solr_import.sh
+
+# Change ownership and permissions
+RUN chown -R solr:solr /opt/solr/server/solr/configsets/deims2solr
+
+# Install cron
+RUN apt-get update && apt-get install -y cron
+
+# Set up the cron job
+RUN echo "0 4 * * * /bin/bash /app/solr_import.sh >> /var/log/cron.log 2>&1" > /etc/cron.d/my-cron
+
+# Give execution rights on the cron job
+RUN chmod 0644 /etc/cron.d/my-cron
+
+# Apply cron job
+RUN crontab /etc/cron.d/my-cron
+
+# Switch back to solr user
+USER solr
+
+COPY data-import-handler-9.2.1.jar /opt/solr/server/solr-webapp/webapp/WEB-INF/lib/
+COPY postgresql-*.jar /opt/solr/server/solr-webapp/webapp/WEB-INF/lib/
+
+# Expose Solr port
+EXPOSE 8983
+
+# Start Solr and create the core
+# CMD ["/opt/solr/bin/solr", "start", "-force", "-p", "8983", "-f"]
+CMD ["solr-precreate", "deims2solr", "/opt/solr/server/solr/configsets/deims2solr"]
