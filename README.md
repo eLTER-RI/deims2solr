@@ -37,31 +37,52 @@ docker-compose down
 
 ## Dockers
 This is a list of used docker images and their setup
+
 For detailed configuration, please see docker-compose.yml
 
 ### Postgres docker
-Latest postgres docker image that uses init.sql to create table.
+Latest postgres docker image that uses init.sql to create table
+
 Data are stored in postgres volume
+
+Please see docker-compose.yml for setup details
 
 ### Python docker
 
 This docker image run Python script that fetch sites metadata from deims.org
+
 Script run on docker deploy and every night at 3:00
 
-- User may specify different eLTER network for meta-data harvesting.
+- User may specify different eLTER network for meta-data harvesting
 - Debug info can be turned on/off in order to print harvesting results in colsole
 - User may turn on/off saving geometry saving from meta-data
 
 Harvested metadata are stored in postgres docker.
+
 After harvesting is done, Solr is called to refresh the imported data.
 
-Please see Dockerfile.python for more details
+Please see docker-compose.yml and Dockerfile.python for setup details
 
 ### Solr docker
-Solr docker use deims2solr core that read the data from postgres docker.
+Solr docker use deims2solr core that read the data from postgres docker
 
+#### Usage examples
+Search for free text eg. natura 2000 like this:
 
-Please see Dockerfile.solr
+To get only deims uuid:
+````
+http://localhost:8983/solr/deims2solr/select?q=data:"natura 2000"&fl=id
+````
+To get everything:
+````
+http://localhost:8983/solr/deims2solr/select?q=data:"natura 2000"
+````
+To use pagination set how many rows to return, and where to start from eg. return 10 rows starting from 100:
+````
+http://localhost:8983/solr/deims2solr/select?q=data:"natura 2000"&fl=id&rows=10&start=100
+````
+
+Please see docker-compose.yml and Dockerfile.solr for setup details
 
 ## Authors
 
