@@ -136,10 +136,11 @@ def main():
     delete_obsolete()
     url = "http://solr:8983/solr/deims2solr/dataimport?command=full-import"
     response = requests.get(url)
-    if response.status_code == 200:
-        print("Data import triggered successfully.")
-    else:
-        print(f"Failed to trigger data import. Status code: {response.status_code}")
+    if DEBUG:
+        if response.status_code == 200:
+            print("Data import triggered successfully.")
+        else:
+            print(f"Failed to trigger data import. Status code: {response.status_code}")
 
 
 if __name__ == "__main__":
