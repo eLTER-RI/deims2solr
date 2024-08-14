@@ -74,6 +74,11 @@ http://localhost:8983/solr/#/deims2solr/core-overview
 ````
 Num Docs must be greater than 0
 
+If Num Docs is still 0, it neccessary to change SOLR URL in the main Python function to the exposed one
+`````
+url = "http://solr:8983/solr/deims2solr/dataimport?command=full-import"
+`````
+
 #### Usage examples
 Search for free text eg. natura 2000 like this:
 
